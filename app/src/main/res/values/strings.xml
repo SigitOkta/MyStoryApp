@@ -16,4 +16,8 @@
     <string name="text_name">Name</string>
     <string name="text_email">Email</string>
     <string name="text_password">Password</string>
+    <string name="menu_logout_en">Logout</string>
+    <string name="fab_content_desc">add Story Image</string>
+    <string name="fab_add_story">Add Story</string>
+    <string name="username">Username</string>
 </resources>

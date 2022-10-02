@@ -15,8 +15,7 @@ import androidx.core.content.ContextCompat
 import com.dwarf.mystoryapp.R
 
 class PassEditText : AppCompatEditText, View.OnTouchListener  {
-    private lateinit var visibilityOnButtonImage: Drawable
-    private lateinit var visibilityOffButtonImage: Drawable
+    private lateinit var visibilityButtonImage: Drawable
     constructor(context: Context) : super(context) {
         init()
     }
@@ -33,7 +32,7 @@ class PassEditText : AppCompatEditText, View.OnTouchListener  {
     }
 
     private fun init() {
-        visibilityOffButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_off_24) as Drawable
+        visibilityButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_24) as Drawable
         setOnTouchListener(this)
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -41,7 +40,8 @@ class PassEditText : AppCompatEditText, View.OnTouchListener  {
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) showVisibilityButton() else hideVisibilityButton()
-                if (s.length < 6 && s.toString().isNotEmpty()) error = context.getString(R.string.valid_password)
+                if (s.length < 6 && s.toString().isNotEmpty()) error = resources.getString(
+                    R.string.valid_password)
             }
             override fun afterTextChanged(s: Editable) {
                 // Do nothing.
@@ -51,7 +51,7 @@ class PassEditText : AppCompatEditText, View.OnTouchListener  {
 
 
     private fun showVisibilityButton() {
-        setButtonDrawables(endOfTheText = visibilityOffButtonImage)
+        setButtonDrawables(endOfTheText = visibilityButtonImage)
     }
     private fun hideVisibilityButton() {
         setButtonDrawables()
@@ -76,12 +76,12 @@ class PassEditText : AppCompatEditText, View.OnTouchListener  {
             val visibilityButtonEnd: Float
             var isVisibilityButtonClicked = false
             if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
-                visibilityButtonEnd = (visibilityOffButtonImage.intrinsicWidth + paddingStart).toFloat()
+                visibilityButtonEnd = (visibilityButtonImage.intrinsicWidth + paddingStart).toFloat()
                 when {
                     event.x < visibilityButtonEnd -> isVisibilityButtonClicked = true
                 }
             } else {
-                visibilityButtonStart = (width - paddingEnd - visibilityOffButtonImage.intrinsicWidth).toFloat()
+                visibilityButtonStart = (width - paddingEnd - visibilityButtonImage.intrinsicWidth).toFloat()
                 when {
                     event.x > visibilityButtonStart -> isVisibilityButtonClicked = true
                 }
@@ -91,12 +91,12 @@ class PassEditText : AppCompatEditText, View.OnTouchListener  {
                     MotionEvent.ACTION_DOWN -> {
                         hideVisibilityButton()
                         if (transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
-                            transformationMethod = PasswordTransformationMethod.getInstance()
-                            visibilityOnButtonImage  = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_24) as Drawable
+                            transformationMethod = PasswordTransformationMethod.getInstance() // hide password
+                            visibilityButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_24) as Drawable
                             showVisibilityButton()
                         } else {
                             transformationMethod = HideReturnsTransformationMethod.getInstance() // show password
-                            visibilityOffButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_off_24) as Drawable
+                            visibilityButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_visibility_off_24) as Drawable
                             showVisibilityButton()
                         }
                         true

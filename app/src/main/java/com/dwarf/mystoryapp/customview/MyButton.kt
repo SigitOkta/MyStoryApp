@@ -30,7 +30,7 @@ class MyButton : AppCompatButton {
         super.onDraw(canvas)
         background = if (isEnabled) enableBackground else disableBackground
         setTextColor(txtColor)
-        textSize = 12f
+        textSize = 20f
         gravity = Gravity.CENTER
         text = if (isEnabled) context.getString(R.string.text_submit) else context.getString(R.string.text_input_first)
     }
