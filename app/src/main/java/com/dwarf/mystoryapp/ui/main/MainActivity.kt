@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -20,6 +18,8 @@ import com.dwarf.mystoryapp.adapter.StoriesAdapter
 import com.dwarf.mystoryapp.data.Result
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.databinding.ActivityMainBinding
+import com.dwarf.mystoryapp.ui.StoryViewModelFactory
+import com.dwarf.mystoryapp.ui.addstory.AddStoryActivity
 import com.dwarf.mystoryapp.ui.login.LoginActivity
 
 
@@ -27,7 +27,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels {
-        MainViewModelFactory.getInstance(
+        StoryViewModelFactory.getInstance(
             UserPreferences.getInstance(dataStore)
         )
     }
@@ -42,7 +42,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         isTokenAvailable()
         setAdapter()
-
+        binding.btnAdd.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getAllStories(token: String) {

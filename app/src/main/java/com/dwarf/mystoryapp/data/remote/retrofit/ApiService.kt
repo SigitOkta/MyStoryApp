@@ -5,6 +5,7 @@ import com.dwarf.mystoryapp.data.remote.response.LoginResponse
 import com.dwarf.mystoryapp.data.remote.response.SignupResponse
 import com.dwarf.mystoryapp.data.remote.response.StoriesResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -27,9 +28,9 @@ interface ApiService {
 
     @Multipart
     @POST("stories")
-    fun addStory(
+    suspend fun addStory(
         @Header("Authorization") token: String,
-        @Part("description") des: String,
+        @Part("description") description: RequestBody,
         @Part file: MultipartBody.Part
     ): AddStoryResponse
 

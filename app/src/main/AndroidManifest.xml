@@ -4,6 +4,11 @@
     package="com.dwarf.mystoryapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"  android:maxSdkVersion="18"/>
+
 
     <application
         android:allowBackup="true"
@@ -14,8 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyStoryApp"
-
         tools:targetApi="31">
+        <activity
+            android:name=".ui.camera.CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.addstory.AddStoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.signup.SignUpActivity"
             android:exported="false" />
@@ -24,10 +34,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:theme="@style/Theme.Starting"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

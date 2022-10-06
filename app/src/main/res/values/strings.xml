@@ -20,4 +20,9 @@
     <string name="fab_content_desc">add Story Image</string>
     <string name="fab_add_story">Add Story</string>
     <string name="username">Username</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="text_description">Description</string>
+    <string name="txt_upload">Upload</string>
+    <string name="Text_upload">Upload</string>
 </resources>
