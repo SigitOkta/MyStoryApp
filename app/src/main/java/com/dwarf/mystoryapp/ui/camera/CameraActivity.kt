@@ -13,6 +13,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.dwarf.mystoryapp.R
 import com.dwarf.mystoryapp.databinding.ActivityCameraBinding
 import com.dwarf.mystoryapp.ui.addstory.AddStoryActivity
 import com.dwarf.mystoryapp.utils.createFile
@@ -61,7 +62,7 @@ class CameraActivity : AppCompatActivity() {
                     imageCapture
                 )
             } catch (exc: Exception) {
-                Toast.makeText(this@CameraActivity, "Gagal memunculkan Kamera.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@CameraActivity, getString(R.string.toast_fail_show_camera), Toast.LENGTH_SHORT)
                     .show()
             }
         }, ContextCompat.getMainExecutor(this))
@@ -87,7 +88,7 @@ class CameraActivity : AppCompatActivity() {
                     finish()
                     Toast.makeText(
                         this@CameraActivity,
-                        "Berhasil mengambil gambar.",
+                        getString(R.string.toast_success_take_picture),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -95,7 +96,7 @@ class CameraActivity : AppCompatActivity() {
                 override fun onError(exception: ImageCaptureException) {
                     Toast.makeText(
                         this@CameraActivity,
-                        "Gagal mengambil gambar.",
+                        getString(R.string.toast_fail_take_picture),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

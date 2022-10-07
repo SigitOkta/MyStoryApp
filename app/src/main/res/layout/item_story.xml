@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemStory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_8sdp"
@@ -15,16 +15,18 @@
         <ImageView
             android:id="@+id/iv_item_story"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/_200sdp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/cd_image_list_stories" />
 
         <View
+            android:id="@+id/v_gradien"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/_200sdp"
             android:background="@drawable/ic_gradient_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

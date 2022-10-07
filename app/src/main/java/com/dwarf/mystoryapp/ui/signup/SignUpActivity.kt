@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import com.dwarf.mystoryapp.data.Result
 import com.dwarf.mystoryapp.databinding.ActivitySignUpBinding
 import com.dwarf.mystoryapp.ui.login.LoginActivity
+import com.dwarf.mystoryapp.utils.LoadingDialog
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivitySignUpBinding
@@ -85,14 +86,16 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         result.observe(this){
             when (it) {
                 is Result.Loading -> {
-
+                    LoadingDialog.startLoading(this)
                 }
                 is Result.Error -> {
+                    LoadingDialog.hideLoading()
                     val error = it.error
                     Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
                 }
 
                 is Result.Success -> {
+                    LoadingDialog.hideLoading()
                     val message = it.data.message
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, LoginActivity::class.java)

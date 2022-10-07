@@ -43,7 +43,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalUp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/cd_image_story_register" />
 
     <LinearLayout
         android:id="@+id/ll_title"
@@ -63,7 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_register_page"
-            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -75,7 +75,6 @@
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/text_name"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_title"
         android:alpha="0"
@@ -100,7 +99,6 @@
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/text_email"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edt_txt_name"
         android:alpha="0"
@@ -127,7 +125,6 @@
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/text_password"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edt_txt_email"
         android:alpha="0"
@@ -147,22 +144,7 @@
         android:alpha="0"
         tools:alpha="1"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:max="100"
-        android:indeterminate="true"
-        android:visibility="gone"
-        android:progressBackgroundTint="@android:color/darker_gray"
-        android:progressTint="@color/brown"
-        app:layout_constraintTop_toBottomOf="@+id/edt_txt_password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <com.dwarf.mystoryapp.customview.MyButton
         android:id="@+id/my_button"
@@ -173,7 +155,7 @@
         android:layout_marginEnd="@dimen/_16sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/edt_txt_password"
         android:alpha="0"
         tools:alpha="1"/>
 

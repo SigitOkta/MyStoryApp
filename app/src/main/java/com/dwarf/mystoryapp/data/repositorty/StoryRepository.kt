@@ -3,9 +3,11 @@ package com.dwarf.mystoryapp.data.repositorty
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.dwarf.mystoryapp.data.Result
+import com.dwarf.mystoryapp.data.local.entity.StoryEntity
+import com.dwarf.mystoryapp.data.local.room.StoryDao
 import com.dwarf.mystoryapp.data.remote.response.AddStoryResponse
-import com.dwarf.mystoryapp.data.remote.response.ListStoryItem
 import com.dwarf.mystoryapp.data.remote.response.StoriesResponse
 import com.dwarf.mystoryapp.data.remote.retrofit.ApiService
 import com.google.gson.Gson
@@ -16,17 +18,27 @@ import okio.IOException
 import retrofit2.HttpException
 
 class StoryRepository private constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val storyDao: StoryDao
 ) {
-    fun getAllStories(token: String): LiveData<Result<List<ListStoryItem>>> = liveData(Dispatchers.IO) {
+    fun getAllStories(token: String): LiveData<Result<List<StoryEntity>>> = liveData(Dispatchers.IO) {
         emit(Result.Loading)
         try {
             val response = apiService.getAllStories("Bearer $token")
-            if (!response.error) {
-                emit(Result.Success(response.listStory))
-            } else {
-                emit(Result.Error(response.message))
+            val stories = response.listStory
+            val storyList = stories.map { story ->
+                StoryEntity(
+                    story.id,
+                    story.photoUrl,
+                    story.createdAt,
+                    story.name,
+                    story.description,
+                    story.lon,
+                    story.lat
+                )
             }
+            storyDao.deleteAll()
+            storyDao.insertAllStory(storyList)
         } catch (e: HttpException) {
             val responseBody =
                 Gson().fromJson(e.response()?.errorBody()?.string(), StoriesResponse::class.java)
@@ -36,6 +48,9 @@ class StoryRepository private constructor(
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
+
+        val localData: LiveData<Result<List<StoryEntity>>> = storyDao.getAllStory().map { Result.Success(it) }
+        emitSource(localData)
     }
 
     fun addNewStory(
@@ -72,9 +87,10 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
         fun getInstance(
             apiService: ApiService,
+            storyDao: StoryDao
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService)
+                instance ?: StoryRepository(apiService,storyDao)
             }.also { instance = it }
     }
 

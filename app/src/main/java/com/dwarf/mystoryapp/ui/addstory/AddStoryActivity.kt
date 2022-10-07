@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -21,9 +20,10 @@ import com.dwarf.mystoryapp.R
 import com.dwarf.mystoryapp.data.Result
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.databinding.ActivityAddStoryBinding
-import com.dwarf.mystoryapp.databinding.ActivityMainBinding
 import com.dwarf.mystoryapp.ui.StoryViewModelFactory
 import com.dwarf.mystoryapp.ui.camera.CameraActivity
+import com.dwarf.mystoryapp.ui.main.MainActivity
+import com.dwarf.mystoryapp.utils.LoadingDialog
 import com.dwarf.mystoryapp.utils.reduceFileImage
 import com.dwarf.mystoryapp.utils.rotateBitmap
 import com.dwarf.mystoryapp.utils.uriToFile
@@ -46,7 +46,7 @@ class AddStoryActivity : AppCompatActivity() {
 
     private val addStoryViewModel: AddStoryViewModel by viewModels {
         StoryViewModelFactory.getInstance(
-            UserPreferences.getInstance(dataStore)
+            UserPreferences.getInstance(dataStore),this
         )
     }
 
@@ -70,7 +70,6 @@ class AddStoryActivity : AppCompatActivity() {
         binding.btnGallery.setOnClickListener { startGallery() }
         binding.btnUpload.setOnClickListener {
             addStoryViewModel.getToken().observe(this) {
-                Log.d("addstory",it)
                 uploadImage(it)
             }
         }
@@ -92,18 +91,19 @@ class AddStoryActivity : AppCompatActivity() {
                 result.observe(this@AddStoryActivity){
                     when(it) {
                         is Result.Loading -> {
-                            /* binding.progressBar.visibility = View.VISIBLE*/
+                            LoadingDialog.startLoading(this)
                         }
                         is Result.Error -> {
-                            /* binding.progressBar.visibility = View.GONE*/
+                            LoadingDialog.hideLoading()
                             val data = it.error
                             Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
                         }
                         is Result.Success -> {
-                            /* binding.progressBar.visibility = View.GONE*/
+                            LoadingDialog.hideLoading()
                             val data = it.data.message
-                            Log.d("addstory",data)
                             Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@AddStoryActivity, MainActivity::class.java))
+                            finish()
                         }
                     }
                 }
@@ -116,7 +116,7 @@ class AddStoryActivity : AppCompatActivity() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, getString(R.string.title_choose_picture))
         launcherIntentGallery.launch(chooser)
     }
 
@@ -160,7 +160,7 @@ class AddStoryActivity : AppCompatActivity() {
         if (!allPermissionsGranted()) {
             Toast.makeText(
                 this,
-                "Not Get Permission.",
+                getString(R.string.toast_not_get_permission),
                 Toast.LENGTH_SHORT
             ).show()
             finish()

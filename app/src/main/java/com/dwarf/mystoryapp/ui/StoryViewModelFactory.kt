@@ -1,5 +1,6 @@
 package com.dwarf.mystoryapp.ui
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
@@ -32,9 +33,10 @@ class StoryViewModelFactory(
 
         fun getInstance(
             userPreferences: UserPreferences,
+            context: Context
         ): StoryViewModelFactory = instance ?: synchronized(this) {
             instance ?: StoryViewModelFactory(
-                userPreferences, Injection.provideStoryRepository()
+                userPreferences, Injection.provideStoryRepository(context)
             )
         }.also { instance = it }
     }

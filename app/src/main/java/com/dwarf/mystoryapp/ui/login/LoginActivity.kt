@@ -1,6 +1,5 @@
 package com.dwarf.mystoryapp.ui.login
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -23,6 +21,7 @@ import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.databinding.ActivityLoginBinding
 import com.dwarf.mystoryapp.ui.main.MainActivity
 import com.dwarf.mystoryapp.ui.signup.SignUpActivity
+import com.dwarf.mystoryapp.utils.LoadingDialog
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token")
 
@@ -106,19 +105,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 result.observe(this) {
                     when (it) {
                         is Result.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                           LoadingDialog.startLoading(this)
                         }
                         is Result.Error -> {
-                            binding.progressBar.visibility = View.GONE
+                            LoadingDialog.hideLoading()
                             val data = it.error
                             Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
                         }
                         is Result.Success -> {
-                            binding.progressBar.visibility = View.GONE
+                            LoadingDialog.hideLoading()
                             val data = it.data
                             Toast.makeText(this, data.message, Toast.LENGTH_SHORT).show()
                             loginViewModel.saveToken(data.loginResult.token)
-                            Log.d("LoginActivity", "Token: ${data.loginResult.token}")
                             val intent = Intent(this, MainActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

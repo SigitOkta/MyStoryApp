@@ -1,7 +1,8 @@
 package com.dwarf.mystoryapp.di
 
+import android.content.Context
+import com.dwarf.mystoryapp.data.local.room.StoryDatabase
 import com.dwarf.mystoryapp.data.remote.retrofit.ApiConfig
-import com.dwarf.mystoryapp.data.remote.retrofit.ApiService
 import com.dwarf.mystoryapp.data.repositorty.StoryRepository
 import com.dwarf.mystoryapp.data.repositorty.UserRepository
 
@@ -10,9 +11,11 @@ object Injection {
         val apiService = ApiConfig.getApiService()
         return UserRepository.getInstance(apiService)
     }
-    fun provideStoryRepository(): StoryRepository {
+    fun provideStoryRepository(context: Context): StoryRepository {
         val apiService = ApiConfig.getApiService()
-        return StoryRepository.getInstance(apiService)
+        val database = StoryDatabase.getInstance(context)
+        val dao = database.storyDao()
+        return StoryRepository.getInstance(apiService,dao)
     }
 
 }

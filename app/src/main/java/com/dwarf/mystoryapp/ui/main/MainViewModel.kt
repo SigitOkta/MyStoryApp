@@ -3,7 +3,6 @@ package com.dwarf.mystoryapp.ui.main
 import androidx.lifecycle.*
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.data.repositorty.StoryRepository
-import com.dwarf.mystoryapp.di.Injection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

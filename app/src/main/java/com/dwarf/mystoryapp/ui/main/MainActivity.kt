@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels {
         StoryViewModelFactory.getInstance(
-            UserPreferences.getInstance(dataStore)
+            UserPreferences.getInstance(dataStore),this
         )
     }
 
@@ -53,16 +55,17 @@ class MainActivity : AppCompatActivity() {
         result.observe(this){
             when(it) {
                 is Result.Loading -> {
-                    /* binding.progressBar.visibility = View.VISIBLE*/
+                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Result.Error -> {
-                    /* binding.progressBar.visibility = View.GONE*/
+                     binding.progressBar.visibility = View.GONE
                     val data = it.error
                     Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
                 }
                 is Result.Success -> {
-                    /* binding.progressBar.visibility = View.GONE*/
-                    storiesAdapter.submitList(it.data)
+                    binding.progressBar.visibility = View.GONE
+                    val storyData = it.data
+                    storiesAdapter.submitList(storyData)
                 }
             }
         }
@@ -85,8 +88,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             } else {
                 getAllStories(it)
-                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-
             }
         }
     }
@@ -105,7 +106,11 @@ class MainActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
-                Toast.makeText(this, "Logout Success", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.toast_logout_success), Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_language ->{
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
             else -> true
