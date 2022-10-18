@@ -46,5 +46,11 @@
     <string name="toast_success_take_picture">Berhasil mengambil gambar</string>
     <string name="toast_fail_take_picture">Gagal menggambil gambar</string>
     <string name="toast_logout_success">Sukses keluar</string>
-    <string name="capture_by">Diambil oleh</string>
+    <string name="capture_by">Diambil oleh %s</string>
+    <string name="menu_map">Menu Peta</string>
+    <string name="title_activity_maps">MapActivity</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>

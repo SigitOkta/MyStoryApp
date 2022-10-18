@@ -1,13 +1,16 @@
-package com.dwarf.mystoryapp.ui.main
+package com.dwarf.mystoryapp.ui.map
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.data.local.entity.UserEntity
 import com.dwarf.mystoryapp.data.repositorty.StoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class MapViewModel(
     private val userPreferences: UserPreferences,
     private val storyRepository: StoryRepository
 ) : ViewModel() {
@@ -15,12 +18,5 @@ class MainViewModel(
         return userPreferences.getUser().asLiveData()
     }
 
-    fun logout() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userPreferences.logout()
-        }
-    }
-
-    fun getAllStories(token: String) = storyRepository.getAllStories(token)
+    fun getAllStoriesWithLocation(token: String) = storyRepository.getAllStoriesWithLocation(token)
 }
-

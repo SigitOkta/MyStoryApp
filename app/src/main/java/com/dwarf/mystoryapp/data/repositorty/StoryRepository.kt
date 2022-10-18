@@ -1,5 +1,6 @@
 package com.dwarf.mystoryapp.data.repositorty
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -53,14 +54,48 @@ class StoryRepository private constructor(
         emitSource(localData)
     }
 
+    fun getAllStoriesWithLocation(token: String): LiveData<Result<List<StoryEntity>>> = liveData(Dispatchers.IO) {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getAllStories("Bearer $token", location = 1)
+            val stories = response.listStory
+            val storyList = stories.map { story ->
+                StoryEntity(
+                    story.id,
+                    story.photoUrl,
+                    story.createdAt,
+                    story.name,
+                    story.description,
+                    story.lon,
+                    story.lat
+                )
+            }
+            storyDao.deleteAll()
+            storyDao.insertAllStory(storyList)
+        } catch (e: HttpException) {
+            val responseBody =
+                Gson().fromJson(e.response()?.errorBody()?.string(), StoriesResponse::class.java)
+            emit(Result.Error(responseBody.message))
+        } catch (e: IOException) {
+            emit(Result.Error(e.message.toString()))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+
+        val localData: LiveData<Result<List<StoryEntity>>> = storyDao.getAllStory().map { Result.Success(it) }
+        emitSource(localData)
+    }
+
     fun addNewStory(
         token: String,
         description: RequestBody,
-        imageMultipart: MultipartBody.Part
+        imageMultipart: MultipartBody.Part,
+        lat: RequestBody,
+        lon: RequestBody,
     ): LiveData<Result<AddStoryResponse>> = liveData(Dispatchers.IO){
         emit(Result.Loading)
         try {
-            val response = apiService.addStory("Bearer $token",description,imageMultipart)
+            val response = apiService.addStory("Bearer $token",description,imageMultipart,lat,lon)
             if (!response.error) {
                 emit(Result.Success(response))
                 Log.d("addNewStory1",response.toString())

@@ -30,11 +30,14 @@ interface ApiService {
     suspend fun addStory(
         @Header("Authorization") token: String,
         @Part("description") description: RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
+        @Part("lat") lat: RequestBody,
+        @Part("lon") lon: RequestBody,
     ): AddStoryResponse
 
     @GET("stories")
     suspend fun getAllStories(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("location") location: Int? = 0
     ): StoriesResponse
 }

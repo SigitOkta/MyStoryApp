@@ -45,5 +45,14 @@
     <string name="toast_success_take_picture">Success to take picture.</string>
     <string name="toast_fail_take_picture">Failed to take a picture.</string>
     <string name="toast_logout_success">Logout Success</string>
-    <string name="capture_by">Capture by</string>
+    <string name="capture_by">Capture by %s</string>
+    <string name="menu_map">Menu Map</string>
+    <string name="title_activity_maps">MapActivity</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
+    <string name="text_parsing_failed">Style parsing failed.</string>
+    <string name="text_error_cant_find_style">\"Can\'t find style. Error: \"</string>
+    <string name="text_no_location">No Location</string>
 </resources>

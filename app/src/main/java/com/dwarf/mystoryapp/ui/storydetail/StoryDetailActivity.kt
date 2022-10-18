@@ -24,9 +24,8 @@ class StoryDetailActivity : AppCompatActivity() {
     private fun setData(data: StoryEntity?) {
         if (data != null){
             binding.apply {
-                val stringData = getString(R.string.capture_by)
-                val value = "$stringData ${data.name}"
-                tvUserStory.text = value
+                val stringData = getString(R.string.capture_by,data.name)
+                tvUserStory.text = stringData
                 tvDesc.text = data.description
 
                 Glide.with(this@StoryDetailActivity)

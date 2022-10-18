@@ -1,12 +1,10 @@
 package com.dwarf.mystoryapp.ui.login
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
+import com.dwarf.mystoryapp.data.local.entity.UserEntity
 import com.dwarf.mystoryapp.data.repositorty.UserRepository
 import com.dwarf.mystoryapp.di.Injection
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -16,12 +14,21 @@ class LoginViewModel(
 
     fun loginUser(email: String, password: String) = userRepository.login(email, password)
 
-    fun saveToken(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            userPreferences.saveToken(token)
+    fun saveUser(user: UserEntity) {
+        viewModelScope.launch {
+            userPreferences.saveUser(user)
         }
     }
 
+    fun getUser(): LiveData<UserEntity> {
+        return userPreferences.getUser().asLiveData()
+    }
+
+    fun login(token: String) {
+        viewModelScope.launch {
+            userPreferences.login(token)
+        }
+    }
 }
 
 class LoginModelFactory private constructor(

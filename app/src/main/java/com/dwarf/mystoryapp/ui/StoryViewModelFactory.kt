@@ -8,6 +8,7 @@ import com.dwarf.mystoryapp.data.repositorty.StoryRepository
 import com.dwarf.mystoryapp.di.Injection
 import com.dwarf.mystoryapp.ui.addstory.AddStoryViewModel
 import com.dwarf.mystoryapp.ui.main.MainViewModel
+import com.dwarf.mystoryapp.ui.map.MapViewModel
 
 class StoryViewModelFactory(
     private val userPreferences: UserPreferences,
@@ -22,6 +23,9 @@ class StoryViewModelFactory(
             }
             modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
                 AddStoryViewModel(userPreferences,storyRepository) as T
+            }
+            modelClass.isAssignableFrom(MapViewModel::class.java) -> {
+                MapViewModel(userPreferences,storyRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

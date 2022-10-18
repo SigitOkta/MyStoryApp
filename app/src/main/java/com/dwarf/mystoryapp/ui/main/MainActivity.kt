@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,6 +24,7 @@ import com.dwarf.mystoryapp.databinding.ActivityMainBinding
 import com.dwarf.mystoryapp.ui.StoryViewModelFactory
 import com.dwarf.mystoryapp.ui.addstory.AddStoryActivity
 import com.dwarf.mystoryapp.ui.login.LoginActivity
+import com.dwarf.mystoryapp.ui.map.MapsActivity
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token")
@@ -80,15 +82,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isTokenAvailable() {
-        mainViewModel.getToken().observe(this){
-            if (it == ""){
+        mainViewModel.getUser().observe(this){ user ->
+            if (user.token.isEmpty()){
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
             } else {
-                getAllStories(it)
+                getAllStories(user.token)
             }
+            Log.d("Main", user.token)
         }
     }
 
@@ -100,6 +103,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
+            R.id.menu_map -> {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.menu_logout ->{
                 mainViewModel.logout()
                 val intent = Intent(this, LoginActivity::class.java)

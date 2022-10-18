@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -18,6 +19,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.dwarf.mystoryapp.R
 import com.dwarf.mystoryapp.data.Result
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
+import com.dwarf.mystoryapp.data.local.entity.UserEntity
 import com.dwarf.mystoryapp.databinding.ActivityLoginBinding
 import com.dwarf.mystoryapp.ui.main.MainActivity
 import com.dwarf.mystoryapp.ui.signup.SignUpActivity
@@ -34,11 +36,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
+    private lateinit var user: UserEntity
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
+        getUser()
         playAnimation()
         setMyButtonEnable()
         binding.edtTxtPassword.addTextChangedListener(object : TextWatcher {
@@ -54,6 +59,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         })
         binding.myButton.setOnClickListener(this)
         binding.tvSignUp.setOnClickListener(this)
+    }
+
+    private fun getUser() {
+        loginViewModel.getUser().observe(this) { user ->
+            this.user = user
+            Log.d("Login1", user.token)
+        }
     }
 
     private fun playAnimation() {
@@ -115,11 +127,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         is Result.Success -> {
                             LoadingDialog.hideLoading()
                             val data = it.data
-                            Toast.makeText(this, data.message, Toast.LENGTH_SHORT).show()
-                            loginViewModel.saveToken(data.loginResult.token)
+                            loginViewModel.saveUser(UserEntity(data.loginResult.userId, data.loginResult.name, data.loginResult.token))
+                            loginViewModel.login(data.loginResult.token)
                             val intent = Intent(this, MainActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            Toast.makeText(this, data.message, Toast.LENGTH_SHORT).show()
                             startActivity(intent)
                             finish()
                         }

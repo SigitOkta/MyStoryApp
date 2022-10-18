@@ -81,6 +81,38 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/til_desc"
+        app:layout_constraintStart_toStartOf="@+id/til_desc"
+        app:layout_constraintTop_toBottomOf="@+id/til_desc">
+
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_location" />
+
+        <ProgressBar
+            android:id="@+id/progressBarLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_8sdp"/>
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_12ssp"
+            android:gravity="center"
+            tools:text="Jakarta Indonesia" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_upload"
         android:layout_width="0dp"
@@ -89,6 +121,6 @@
         android:text="@string/Text_upload"
         app:layout_constraintEnd_toEndOf="@+id/til_desc"
         app:layout_constraintStart_toStartOf="@+id/til_desc"
-        app:layout_constraintTop_toBottomOf="@+id/til_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
