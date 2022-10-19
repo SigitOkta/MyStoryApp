@@ -1,13 +1,13 @@
 package com.dwarf.mystoryapp.data.repositorty
 
-import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.lifecycle.map
+import androidx.paging.*
 import com.dwarf.mystoryapp.data.Result
+import com.dwarf.mystoryapp.data.StoryRemoteMediator
 import com.dwarf.mystoryapp.data.local.entity.StoryEntity
-import com.dwarf.mystoryapp.data.local.room.StoryDao
+import com.dwarf.mystoryapp.data.local.room.StoryDatabase
 import com.dwarf.mystoryapp.data.remote.response.AddStoryResponse
 import com.dwarf.mystoryapp.data.remote.response.StoriesResponse
 import com.dwarf.mystoryapp.data.remote.retrofit.ApiService
@@ -20,39 +20,20 @@ import retrofit2.HttpException
 
 class StoryRepository private constructor(
     private val apiService: ApiService,
-    private val storyDao: StoryDao
+    private val storyDatabase: StoryDatabase
 ) {
-    fun getAllStories(token: String): LiveData<Result<List<StoryEntity>>> = liveData(Dispatchers.IO) {
-        emit(Result.Loading)
-        try {
-            val response = apiService.getAllStories("Bearer $token")
-            val stories = response.listStory
-            val storyList = stories.map { story ->
-                StoryEntity(
-                    story.id,
-                    story.photoUrl,
-                    story.createdAt,
-                    story.name,
-                    story.description,
-                    story.lon,
-                    story.lat
-                )
-            }
-            storyDao.deleteAll()
-            storyDao.insertAllStory(storyList)
-        } catch (e: HttpException) {
-            val responseBody =
-                Gson().fromJson(e.response()?.errorBody()?.string(), StoriesResponse::class.java)
-            emit(Result.Error(responseBody.message))
-        } catch (e: IOException) {
-            emit(Result.Error(e.message.toString()))
-        } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
-        }
 
-        val localData: LiveData<Result<List<StoryEntity>>> = storyDao.getAllStory().map { Result.Success(it) }
-        emitSource(localData)
-    }
+    fun getAllStories(token: String): LiveData<PagingData<StoryEntity>> =
+        @OptIn(ExperimentalPagingApi::class)
+        Pager(
+            config = PagingConfig(
+                pageSize = 10
+            ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, token),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getAllStory()
+            }
+        ).liveData
 
     fun getAllStoriesWithLocation(token: String): LiveData<Result<List<StoryEntity>>> = liveData(Dispatchers.IO) {
         emit(Result.Loading)
@@ -70,8 +51,7 @@ class StoryRepository private constructor(
                     story.lat
                 )
             }
-            storyDao.deleteAll()
-            storyDao.insertAllStory(storyList)
+            emit(Result.Success(storyList))
         } catch (e: HttpException) {
             val responseBody =
                 Gson().fromJson(e.response()?.errorBody()?.string(), StoriesResponse::class.java)
@@ -81,9 +61,9 @@ class StoryRepository private constructor(
         } catch (e: Exception) {
             emit(Result.Error(e.message.toString()))
         }
-
+/*
         val localData: LiveData<Result<List<StoryEntity>>> = storyDao.getAllStory().map { Result.Success(it) }
-        emitSource(localData)
+        emitSource(localData)*/
     }
 
     fun addNewStory(
@@ -122,10 +102,10 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
         fun getInstance(
             apiService: ApiService,
-            storyDao: StoryDao
+            storyDatabase: StoryDatabase
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService,storyDao)
+                instance ?: StoryRepository(apiService,storyDatabase)
             }.also { instance = it }
     }
 

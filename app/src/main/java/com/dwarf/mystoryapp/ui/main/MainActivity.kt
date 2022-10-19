@@ -8,7 +8,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,8 +16,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dwarf.mystoryapp.R
+import com.dwarf.mystoryapp.adapter.LoadingStateAdapter
 import com.dwarf.mystoryapp.adapter.StoriesAdapter
-import com.dwarf.mystoryapp.data.Result
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
 import com.dwarf.mystoryapp.databinding.ActivityMainBinding
 import com.dwarf.mystoryapp.ui.StoryViewModelFactory
@@ -55,21 +54,8 @@ class MainActivity : AppCompatActivity() {
     private fun getAllStories(token: String) {
         val result = mainViewModel.getAllStories(token)
         result.observe(this){
-            when(it) {
-                is Result.Loading -> {
-                     binding.progressBar.visibility = View.VISIBLE
-                }
-                is Result.Error -> {
-                     binding.progressBar.visibility = View.GONE
-                    val data = it.error
-                    Toast.makeText(this, data, Toast.LENGTH_SHORT).show()
-                }
-                is Result.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    val storyData = it.data
-                    storiesAdapter.submitList(storyData)
-                }
-            }
+            val storyData = it
+            storiesAdapter.submitData(lifecycle,storyData)
         }
     }
 
@@ -77,7 +63,11 @@ class MainActivity : AppCompatActivity() {
        binding.rvStories.apply {
            layoutManager = LinearLayoutManager(this@MainActivity)
            setHasFixedSize(true)
-           adapter = storiesAdapter
+           adapter = storiesAdapter.withLoadStateFooter(
+               footer = LoadingStateAdapter {
+                   storiesAdapter.retry()
+               }
+           )
        }
     }
 

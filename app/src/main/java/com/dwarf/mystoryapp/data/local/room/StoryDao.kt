@@ -1,6 +1,6 @@
 package com.dwarf.mystoryapp.data.local.room
 
-import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,7 +11,7 @@ import com.dwarf.mystoryapp.data.local.entity.StoryEntity
 @Dao
 interface StoryDao {
     @Query("SELECT * FROM story")
-    fun getAllStory(): LiveData<List<StoryEntity>>
+    fun getAllStory(): PagingSource<Int, StoryEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllStory(storyList: List<StoryEntity>)

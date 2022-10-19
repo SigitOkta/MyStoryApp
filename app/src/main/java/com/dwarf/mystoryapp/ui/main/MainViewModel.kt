@@ -1,7 +1,10 @@
 package com.dwarf.mystoryapp.ui.main
 
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dwarf.mystoryapp.data.local.datastore.UserPreferences
+import com.dwarf.mystoryapp.data.local.entity.StoryEntity
 import com.dwarf.mystoryapp.data.local.entity.UserEntity
 import com.dwarf.mystoryapp.data.repositorty.StoryRepository
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +24,9 @@ class MainViewModel(
         }
     }
 
-    fun getAllStories(token: String) = storyRepository.getAllStories(token)
+    fun getAllStories(token : String): LiveData<PagingData<StoryEntity>> =
+        storyRepository.getAllStories(token).cachedIn(viewModelScope)
+
+
 }
 

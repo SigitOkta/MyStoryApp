@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dwarf.mystoryapp.data.local.entity.StoryEntity
@@ -16,15 +16,15 @@ import com.dwarf.mystoryapp.databinding.ItemStoryBinding
 import com.dwarf.mystoryapp.ui.storydetail.StoryDetailActivity
 import com.dwarf.mystoryapp.ui.storydetail.StoryDetailActivity.Companion.EXTRA_STORY
 
-class StoriesAdapter : ListAdapter<StoryEntity, StoriesAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     class MyViewHolder(private val binding: ItemStoryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(stories: StoryEntity){
+        fun bind(stories: StoryEntity?){
             binding.apply {
                 Glide.with(itemView.context)
-                    .load(stories.photoUrl)
+                    .load(stories?.photoUrl)
                     .into(ivItemStory)
-                tvUserStory.text = stories.name
+                tvUserStory.text = stories?.name
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, StoryDetailActivity::class.java)
                     intent.putExtra(EXTRA_STORY, stories)
