@@ -8,15 +8,15 @@ import com.dwarf.mystoryapp.data.remote.response.LoginResponse
 import com.dwarf.mystoryapp.data.remote.response.SignupResponse
 import com.dwarf.mystoryapp.data.remote.retrofit.ApiService
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
 import okio.IOException
 import retrofit2.HttpException
 
-class UserRepository private constructor(
+@Suppress("BlockingMethodInNonBlockingContext")
+class UserRepository constructor(
     private val apiService: ApiService
 ) {
     fun signup(name: String, email: String, password: String): LiveData<Result<SignupResponse>> =
-        liveData(Dispatchers.IO) {
+        liveData {
             emit(Result.Loading)
             try {
                 val response = apiService.signupUser(name, email, password)
@@ -24,7 +24,6 @@ class UserRepository private constructor(
                     emit(Result.Success(response))
                 } else {
                     emit(Result.Error(response.message))
-
                 }
             } catch (e: HttpException) {
                 val responseBody =
@@ -36,7 +35,7 @@ class UserRepository private constructor(
         }
 
     fun login(email: String, password: String): LiveData<Result<LoginResponse>> =
-        liveData(Dispatchers.IO) {
+        liveData {
             emit(Result.Loading)
             try {
                 val response = apiService.loginUser(email, password)

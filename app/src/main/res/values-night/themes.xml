@@ -16,11 +16,4 @@
         <item name="android:windowEnterTransition">@android:transition/explode</item>
         <item name="android:windowExitTransition">@android:transition/explode</item>
     </style>
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/purple3</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_story_img</item>
-        <item name="windowSplashScreenAnimationDuration">200</item>
-        <item name="postSplashScreenTheme">@style/Theme.MyStoryApp</item>
-
-    </style>
 </resources>

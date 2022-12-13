@@ -10,7 +10,6 @@
     <string name="text_hint_password">kata sandi minimal 6 karakter</string>
     <string name="sign_up">Daftar</string>
     <string name="sign_up_question">Atau Daftar dengan</string>
-    <string name="text_story_app">Story App</string>
     <string name="title_login_page">Siap berbagi cerita hari ini?</string>
     <string name="title_login_input">Masukan Data Anda Terlebih Dahulu!</string>
     <string name="title_register_page">Isi detail Anda di bawah ini</string>
@@ -18,17 +17,14 @@
     <string name="text_email">Email</string>
     <string name="text_password">Kata sandi</string>
     <string name="menu_logout_en">Keluar</string>
-    <string name="fab_content_desc">tambahkan Gambar Cerita</string>
     <string name="fab_add_story">Tambah Cerita</string>
     <string name="username">Nama</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="text_description">Deskripsi</string>
-    <string name="txt_upload">Unggah</string>
     <string name="Text_upload">Unggah</string>
     <string name="loading">Memuat...</string>
     <string name="appwidget_text">Story Widget</string>
-    <string name="add_widget">Add widget</string>
     <string name="app_widget_description">Ini adalah deskripsi widget aplikasi</string>
     <string name="empty_text">tidak ada data</string>
     <string name="menu_setting">Language Setting</string>

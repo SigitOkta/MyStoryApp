@@ -19,7 +19,6 @@ data class StoriesResponse(
 
 @Parcelize
 data class ListStoryItem(
-
     @field:SerializedName("photoUrl")
     val photoUrl: String,
 

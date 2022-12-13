@@ -21,8 +21,8 @@ class AddStoryViewModel(
         token: String,
         description: RequestBody,
         imageMultipart: MultipartBody.Part,
-        lat: RequestBody,
-        lon: RequestBody
+        lat: RequestBody?,
+        lon: RequestBody?
     ) = storyRepository.addNewStory(token, description, imageMultipart, lat, lon)
 
 }

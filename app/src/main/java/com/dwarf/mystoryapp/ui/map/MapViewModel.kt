@@ -17,6 +17,5 @@ class MapViewModel(
     fun getUser(): LiveData<UserEntity> {
         return userPreferences.getUser().asLiveData()
     }
-
     fun getAllStoriesWithLocation(token: String) = storyRepository.getAllStoriesWithLocation(token)
 }

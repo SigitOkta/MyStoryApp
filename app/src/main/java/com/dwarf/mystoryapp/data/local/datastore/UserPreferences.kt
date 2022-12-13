@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserPreferences private constructor(private val dataStore: DataStore<Preferences>){
-
-
     fun getUser(): Flow<UserEntity> {
         return dataStore.data.map{ preferences ->
             UserEntity(
@@ -42,7 +40,6 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
 
     companion object {
         @Volatile
-
         private var instance: UserPreferences? = null
         private val ID_KEY = stringPreferencesKey("userId")
         private val NAME_KEY = stringPreferencesKey("name")

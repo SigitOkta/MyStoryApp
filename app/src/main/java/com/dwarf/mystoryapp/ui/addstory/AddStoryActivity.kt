@@ -83,7 +83,9 @@ class AddStoryActivity : AppCompatActivity() {
             }
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getMyLocation()
+        binding.ivLocation.setOnClickListener {
+            getMyLocation()
+        }
     }
 
     private fun getAddressName(lat: Double, lon: Double): String? {
@@ -105,8 +107,12 @@ class AddStoryActivity : AppCompatActivity() {
             val file = reduceFileImage(getFile as File)
             val desc = binding.edtDesc.text.toString().trim()
             val description = desc.toRequestBody("text/plain".toMediaType())
-            val latitude: RequestBody = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
-            val longitude: RequestBody = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
+            var latitude: RequestBody? = null
+            var longitude: RequestBody? = null
+            if (location != null) {
+                latitude = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
+                longitude = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
+            }
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
@@ -136,6 +142,8 @@ class AddStoryActivity : AppCompatActivity() {
                 }
             }
 
+        } else {
+            Toast.makeText(this, "You must add some picture", Toast.LENGTH_SHORT).show()
         }
     }
 
