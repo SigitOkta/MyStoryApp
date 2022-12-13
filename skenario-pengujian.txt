@@ -1,0 +1,72 @@
+1. LoginVIewModelTest
+	a. ketika login berhasil
+		- memastikan data tidak null
+		- memastikan return data sesuai dengan yang diharapkan
+		- memastikan mengembalikan Result.Success
+	b. Ketika gagal login(false)
+		- memastikan mengembalikan Result.Error
+	c. ketika save user
+		- memastikan fungsi saveUser terpanggil
+	d. Ketika token ada panggil fungsi login
+		- memastikan data tidak null
+		- memastikan fungsi login terpanggil
+
+2. SignupViewModelTest
+	a. Ketika Signup berhasil
+		- memastikan data tidak null
+		- memastikan return data sesuai dengan yang diharapkan
+		- memastikan mengembalikan Result.Success
+	b. Ketika gagal untuk signup
+		- memastikan mengembalikan Result.Error
+
+3. MainViewModelTest
+	a. Ketika memanggil getUser mengembalikan(return) data User 
+		- memastikan fungsi getUser terpanggil
+	b. Ketika memanggil fungsi logout
+		- memastikan fungsi logout terpanggil
+	c. Ketika memanggil allStories berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+		- memastikan jumlah data sesuai dengan yang diharpkan
+		- memastikan data name sesuai dengan yang diharapkan
+
+4. MapViewModelTest
+	a. Ketika memanggil getUser mengembalikan(return) data User 
+		- memastikan fungsi getUser terpanggil
+	b. Ketika memanggil getAllStoriesWithLocation berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+		- memastikan jumlah data sesuai dengan yang diharpkan
+	c. Ketika memanggil getAllStoriesWithLocation gagal
+		- memastikan mengembalikan Result.Error
+
+5. AddStoryViewModelTest
+	a. Ketika memanggil getUser mengembalikan(return) data User 
+		- memastikan fungsi getUser terpanggil
+	b. Ketika memanggil addStory berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+	c. Ketika memanggil addStory gagal
+		- memastikan mengembalikan Result.Error
+
+6. UserRepositoryTest
+	a. Ketika memanggil login dan berhasil
+		- memastikan data tidak null
+		- memastikan mengembalikan Result.Success
+	b. Ketika memanggil register dan berhasil
+		- memastikan data tidak null
+		- memastikan mengembalikan Result.Success
+
+7. StoryRepositoryTest
+	a. Ketika memanggil addStory berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+		- memastikan mengembalikan Result.Success
+	b. Ketika memanggil getAllStoriesWithLocation berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+		- memastikan mengembalikan Result.Success
+	b. Ketika memanggil getAllStories nolocation berhasil
+		- memastikan data tidak null
+		- memastikan data sesuai dengan yang diharapkan
+		- memastikan mengembalikan Result.Success
